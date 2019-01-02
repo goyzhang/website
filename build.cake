@@ -1,7 +1,7 @@
-#tool "nuget:https://api.nuget.org/v3/index.json?package=Wyam&version=1.0.0"
-#addin "nuget:https://api.nuget.org/v3/index.json?package=Cake.Git&version=0.16.0"
-#addin "nuget:https://api.nuget.org/v3/index.json?package=Cake.Wyam&version=1.0.0"
-#addin "nuget:https://api.nuget.org/v3/index.json?package=Octokit&version=0.27.0"
+#tool "nuget:https://api.nuget.org/v3/index.json?package=Wyam&version=2.1.0"
+#addin "nuget:https://api.nuget.org/v3/index.json?package=Cake.Git&version=0.19.0"
+#addin "nuget:https://api.nuget.org/v3/index.json?package=Cake.Wyam&version=2.1.0"
+#addin "nuget:https://api.nuget.org/v3/index.json?package=Octokit&version=0.32.0"
 
 using Octokit;
 
@@ -40,7 +40,7 @@ Task("Clean")
     if(DirectoryExists(dependenciesDir))
     {
         CleanDirectory(dependenciesDir);
-        DeleteDirectory(dependenciesDir, true);
+        DeleteDirectory(dependenciesDir, new DeleteDirectorySettings { Recursive = true, Force = true });
     }
 
     CreateDirectory(dependenciesDir);
@@ -91,8 +91,8 @@ Task("Preview")
 Task("Debug")
     .Does(() =>
     {
-        StartProcess("../Wyam/src/clients/Wyam/bin/Debug/wyam.exe",
-            "-a \"../Wyam/src/**/bin/Debug/*.dll\" -r \"docs -i\" -t \"../Wyam/themes/Docs/Samson\" -p --attach");
+        StartProcess("../Wyam/src/clients/Wyam/bin/Debug/net462/wyam.exe",
+            "-a \"../Wyam/tests/integration/Wyam.Examples.Tests/bin/Debug/net462/**/*.dll\" -r \"docs -i\" -t \"../Wyam/themes/Docs/Samson\" -p");
     });
 
 //////////////////////////////////////////////////////////////////////
